@@ -1,0 +1,29 @@
+<!-- <script src="subtle-crypto.js" defer></script>
+<script src="script.js" defer></script> -->
+
+<label class="label-container" for="inputField">{{{LABEL}}}</label>
+
+<!-- If there is an image specified in the media:image column, show it here -->
+{{#MEDIAIMAGE}}
+    <img src="{{MEDIAIMAGE}}" />
+{{/MEDIAIMAGE}}
+
+<!-- If there is audio specified in the media:audio column, show it here -->
+{{#MEDIAAUDIO}}
+    <audio controls controlsList="nodownload">
+        <source src="{{MEDIAAUDIO}}">
+        Your browser does not support the audio element.
+    </audio>
+{{/MEDIAAUDIO}}
+
+<!-- If there is a video specified in the media:video column, show it here -->
+{{#MEDIAVIDEO}}
+    <video width="100%" height="*" controls controlsList="nodownload">
+        <source src="{{MEDIAVIDEO}}">
+        Your browser does not support the video tag.
+    </video>
+{{/MEDIAVIDEO}}
+
+<span class="help-block">{{{HINT}}}</span>
+
+<div id="decrypted"></div>

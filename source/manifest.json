@@ -1,0 +1,9 @@
+{
+	"name" : "Encrypt",
+	"author" : "Dobility",
+	"version": "0.0.1",
+	"supportedFieldTypes": ["text"],
+	"externalJs": [ "subtle-crypto.js" ],
+	"hideDefaultRequiredMessage": true,
+	"hideDefaultConstraintMessage": true
+}
