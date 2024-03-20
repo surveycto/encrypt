@@ -57,13 +57,23 @@ async function encryptAll () {
   var ciphertext = []
   var displayHtml = []
 
-  const addEncryped = (d) => {
+  const addWarning = (d) => {
     ciphertext.push(d)
-    displayHtml.push(`<p>${d}</p>`)
+    displayHtml.push(`<li>${d}</li>`)
   }
 
   for (var c = 0; c < dataList.length; c++) {
-    addEncryped((await encrypt(dataList[c], passkey)).join('|'))
+    try {
+
+      ciphertext.push((await encrypt(dataList[c], passkey)).join('|'))
+      displayHtml.push('<li>Success</li>')
+    } catch (e) {
+      if (['EncodingError', 'EncryptionError'].includes(e.name)) {
+        addWarning(`Failed: ${e.message}`)
+      } else {
+        throw e
+      }
+    }
   }
 
   setAnswer(ciphertext.join(separator))

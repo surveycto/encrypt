@@ -1,5 +1,12 @@
 // https://davidmyers.dev/blog/a-practical-guide-to-the-web-cryptography-api
 
+class EncryptionError extends Error {
+  constructor (message, name = 'EncryptionError') {
+    super(message)
+    this.name = name
+  }
+}
+
 const generateKey = async (algorithm = 'AES-CBC') => {
   return window.crypto.subtle.generateKey({
     name: algorithm,
@@ -70,7 +77,16 @@ const pack = (buffer) => {
 * @return {ArrayBuffer} 
 */
 const unpack = (packed) => {
-  const string = atob(urlSafeToB64(packed))
+  try {
+    var string = atob(urlSafeToB64(packed))
+
+  } catch (e) {
+    if (e.message.includes('The string to be decoded is not correctly encoded.')) {
+      throw new EncryptionError('Base64 string is not properly encoded, and cannot be decoded.', 'EncodingError')
+    } else {
+      throw e
+    }
+  }
   const buffer = new ArrayBuffer(string.length)
   const bufferView = new Uint8Array(buffer)
   for (let i = 0; i < string.length; i++) {
@@ -99,22 +115,32 @@ async function keyFromB64 (key, algorithm = 'AES-CBC') {
   const keyType = typeof key
   switch (keyType) {
     case 'string': {
-      return await crypto.subtle.importKey(
-        'raw',
-        unpack(key),
-        algorithm,
-        true,
-        ['encrypt', 'decrypt']
-      )
+      try {
+        return await crypto.subtle.importKey(
+          'raw',
+          unpack(key),
+          algorithm,
+          true,
+          ['encrypt', 'decrypt']
+        )
+      } catch (e) {
+        switch (e.name) {
+          case 'EncodingError': {
+            throw new EncryptionError(`The Base64 encryption key provided is not properly encoded. Please make sure it is properly encoded: ${key}`, 'EncodingError')
+          } default: {
+            throw e
+          }
+        }
+      }
     } case 'object': {
       return key
     } default: {
-      throw `Invalid key type "${keyType}".`
+      throw new EncryptionError(`Invalid key type "${keyType}".`)
     }
   }
 }
 
-async function b64FromKey(key) {
+async function b64FromKey (key) {
   return pack(await crypto.subtle.exportKey('raw', key))
 }
 
@@ -125,13 +151,24 @@ async function b64FromKey(key) {
 * @return {Array[String]} First item is the ciphertext, second is the IV. Both are Base64-encoded strings.
 */
 const subtleEncrypt = async (data, key, algorithm = 'AES-CBC') => {
-  key = await keyFromB64(key, algorithm)
+  try {
+    var decodedKey = await keyFromB64(key, algorithm)
+  } catch (e) {
+    switch (e.name) {
+      case 'EncodingError': {
+        throw new EncryptionError(`The Base64 encryption key provided is not properly encoded. Please make sure it is properly encoded: ${key}`, 'EncodingError')
+      } default: {
+        throw e
+      }
+    }
+  }
+  
   const encoded = encode(data)
   const iv = generateIv()
   const cipher = await crypto.subtle.encrypt({
     name: algorithm,
     iv: iv,
-  }, key, encoded)
+  }, decodedKey, encoded)
   return [
     pack(cipher),
     uint8ArrayToBase64(iv),]
@@ -146,11 +183,49 @@ const subtleEncrypt = async (data, key, algorithm = 'AES-CBC') => {
 * @return {CryptoKey} 
 */
 const subtleDecrypt = async (ciphertext, iv, key, algorithm = 'AES-CBC') => {
-  var encoded = await crypto.subtle.decrypt({
-    name: algorithm,
-    iv: base64ToUintArray(iv),
-  }, await keyFromB64(key, algorithm), unpack(ciphertext))
 
-  // const encoded = await window.cr
+  try {
+    var raw_ciphertext = unpack(ciphertext)
+  } catch (e) {
+    switch (e.name) {
+      case 'EncodingError': {
+        throw new EncryptionError(`The Base64 ciphertext provided is not properly encoded. Please make sure it is properly encoded: ${ciphertext}`, 'EncodingError')
+      } default: {
+        throw e
+      }
+    }
+  }
+
+  try {
+    var raw_iv = base64ToUintArray(iv)
+  } catch (e) {
+    switch (e.name) {
+      case 'EncodingError': {
+        throw new EncryptionError(`The Base64 IV provided is not properly encoded. Please make sure it is properly encoded: ${iv}`, 'EncodingError')
+      } default: {
+        throw e
+      }
+    }
+  }
+
+  var subtleCryptoKey = await keyFromB64(key, algorithm)
+
+  try {
+
+    var encoded = await crypto.subtle.decrypt({
+      name: algorithm,
+      iv: raw_iv,
+    }, subtleCryptoKey, raw_ciphertext)
+  } catch (e) {
+    switch (e.name) {
+      case 'OperationError': {
+        throw new EncryptionError(`Unable to decrypt data using the information provided. Please check your ciphertext and encryption key.`)
+      } default: {
+        throw e
+      }
+    }
+  }
+
+
   return decode(encoded)
 }
