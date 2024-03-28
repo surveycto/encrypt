@@ -63,6 +63,25 @@ Note: The encryption re-occurs every time you go to the field with the field plu
 
 When you reach the field, it will display your field *label* (and *hint* and media if you include them as well) at the top, followed by the results of the decryption. If the decryption was successful, it will say "Success". However, if decryption failed, it will say "Failed", followed by the reason for the decryption failure. It will do this for each piece of plaintext data it receives.
 
+## How to use
+
+### Getting started
+
+**To use this field plug-in as-is:**
+
+1. Download the [sample form](https://github.com/surveycto/encrypt/raw/main/extras/sample-form/Encryption%20field%20plug-in%20sample%20form.xlsx).
+1. Download the [encrypt.fieldplugin.zip](https://github.com/surveycto/encrypt/raw/main/encrypt.fieldplugin.zip) field plug-in file.
+1. Upload the sample form to your server with the field plug-in file as an attachment.
+1. If you choose to scan the encryption key, scan this QR code:
+
+![](extras/readme-images/aes_key.png)
+
+If you choose *Manual entry*, the *default* field value will be the example encryption key.
+
+**Warning**: This is just an example, and you should **not** publicly share your encryption key like this. You should use your own encryption key to encrypt and decrypt your data.
+
+If you decide to use a QR code to store your encryption key, make sure that QR code is well-protected, since anyone who has that QR code can decrypt your data.
+
 ### Parameters
 
 For named parameters, this field plug-in has 1 required parameter and 1 optional parameter.
