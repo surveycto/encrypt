@@ -83,7 +83,7 @@ Here are the named parameters:
 |Name|Description|
 |---|---|
 |`key` (required)| The passkey that was used to encrypt the data, which will be used to decrypt the data. **This key must be Base64-encoded**. |
-|`separator` (optional) | The separator used in the list returned by the field plug-in. This should be a value that does not exist in your decrypted data (but it can exist in the ciphertext).<br>**Default**: (space) |
+|`separator` (optional) | The separator used in the list returned by the field plug-in. You can use any character EXCEPT those used by Base64 encoding (uppercase and lowercase letters, numbers, slash `/`, and plus `+`) and a pipe `\|` (which is used as the ciphertext-IV separator).<br>**Default**: (space) |
 
 ### Default SurveyCTO feature support
 
