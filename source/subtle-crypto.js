@@ -1,4 +1,4 @@
-// https://davidmyers.dev/blog/a-practical-guide-to-the-web-cryptography-api
+// Much of this is based on https://davidmyers.dev/blog/a-practical-guide-to-the-web-cryptography-api
 
 class EncryptionError extends Error {
   constructor (message, name = 'EncryptionError') {
@@ -81,7 +81,11 @@ const unpack = (packed) => {
     var string = atob(urlSafeToB64(packed))
 
   } catch (e) {
-    if (e.message.includes('The string to be decoded is not correctly encoded.')) {
+    let message = e.message
+    if (
+      message.includes('The string to be decoded is not correctly encoded.') ||
+      message.includes('The string contains invalid characters.') // This seems to only occur in iOS.
+    ) {
       throw new EncryptionError('Base64 string is not properly encoded, and cannot be decoded.', 'EncodingError')
     } else {
       throw e
