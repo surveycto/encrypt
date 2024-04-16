@@ -7,21 +7,17 @@ class EncryptionError extends Error {
   }
 }
 
-const generateKey = async (algorithm = 'AES-CBC') => {
-  return window.crypto.subtle.generateKey({
-    name: algorithm,
-    length: 256,
-  }, true, ['encrypt', 'decrypt'])
-}
-
 /*
-* Turns a string into a Uint8Array so it can be encrypted.
-* @param {String} data
-* @return {Uint8Array} 
+
+* Generates a Base64-encoded, 128-bit encryption key. (Currently not used, not tested.)
+* @param {String} algorithm
+* @return {CryptoKey} 
 */
-const encode = (data) => {
-  const encoder = new TextEncoder()
-  return encoder.encode(data)
+const generateKey = async (algorithm = 'AES-CBC') => {
+  return await window.crypto.subtle.generateKey({
+    name: algorithm,
+    length: 128,
+  }, true, ['encrypt', 'decrypt'])
 }
 
 /*
@@ -100,6 +96,16 @@ const unpack = (packed) => {
 }
 
 /*
+* Turns a string into a Uint8Array so it can be encrypted.
+* @param {String} data
+* @return {Uint8Array} 
+*/
+const encode = (data) => {
+  const encoder = new TextEncoder()
+  return encoder.encode(data)
+}
+
+/*
 * Turns an ArrayBuffer into human-readable string.
 * @param {ArrayBuffer} bytestream
 * @return {String} 
@@ -144,6 +150,11 @@ async function keyFromB64 (key, algorithm = 'AES-CBC') {
   }
 }
 
+/*
+* Turns a CryptoKey object into a Base64-encoded key. (Currently unused.)
+* @param {CryptoKey} key
+* @return {String}
+*/
 async function b64FromKey (key) {
   return pack(await crypto.subtle.exportKey('raw', key))
 }
@@ -175,8 +186,8 @@ const subtleEncrypt = async (data, key, algorithm = 'AES-CBC') => {
   }, decodedKey, encoded)
   return [
     pack(cipher),
-    uint8ArrayToBase64(iv),]
-
+    uint8ArrayToBase64(iv),
+  ]
 }
 
 /*
@@ -229,7 +240,6 @@ const subtleDecrypt = async (ciphertext, iv, key, algorithm = 'AES-CBC') => {
       }
     }
   }
-
 
   return decode(encoded)
 }
