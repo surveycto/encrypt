@@ -33,11 +33,13 @@ async function encryptAll () {
   var displayHtml = []
   var results = []
 
+  // Used for saving the results to metadata and displaying them to the enumerator.
   const addResult = (d) => {
     results.push(d)
     displayHtml.push(`<li>${d}</li>`)
   }
 
+  // Go through each piece of plaintext, and encrypt it.
   for (var c = 0; c < dataList.length; c++) {
     try {
       ciphertext.push((await encrypt(dataList[c], passkey)).join('|'))
