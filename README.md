@@ -63,6 +63,24 @@ Note: The encryption re-occurs every time you go to the field with the field plu
 
 When you reach the field, it will display your field *label* (and *hint* and media if you include them as well) at the top, followed by the results of the decryption. If the decryption was successful, it will say "Success". However, if decryption failed, it will say "Failed", followed by the reason for the decryption failure. It will do this for each piece of plaintext data it receives.
 
+#### Metadata
+
+The metadata will be a pipe-separated list of the encryption status, in the same order as the data (similar to what appeared in the field *label*).
+
+For example, if all of the data was encrypted successfully, the metadata will be this:
+
+    Success|Success|Success
+
+However, if the encryption key is in the incorrect format, then metadata will be something like this:
+
+```
+Failed: The Base64 encryption key provided is not properly encoded. Please make sure it is properly encoded: RQmHY+vQ5UQOeufZZQHZhg=|Failed: The Base64 encryption key provided is not properly encoded. Please make sure it is properly encoded: RQmHY+vQ5UQOeufZZQHZhg=|Failed: The Base64 encryption key provided is not properly encoded. Please make sure it is properly encoded: RQmHY+vQ5UQOeufZZQHZhg=
+```
+
+(All three of the error messages are the same, since all errors are caused by the same issue.)
+
+Use the [plug-in-metadata() function](https://docs.surveycto.com/02-designing-forms/01-core-concepts/09.expressions.html#plug-in-metadata) in your form (usually in a [*calculate* field](https://docs.surveycto.com/02-designing-forms/01-core-concepts/03zb.field-types-calculate.html)) to retrieve the metadata.
+
 ## How to use
 
 ### Getting started
