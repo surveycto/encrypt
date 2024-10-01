@@ -2,13 +2,13 @@
 
 ## Description
 
-This field plug-in supports data encryption inside forms using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard). Supply it with an encryption key and an input for encrypting and it will encrypt the input. This field plug-in was design for use along with the [decrypt field plug-in](https://github.com/surveycto/decrypt) and the [scto-encryption package](https://github.com/surveycto/scto-encryption).
+This field plug-in supports data encryption inside forms using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard). Provide an encryption key and input, and the plug-in will encrypt the input. This field plug-in was designed for use along with the [decrypt field plug-in](https://github.com/surveycto/decrypt) and the [scto-encryption package](https://github.com/surveycto/scto-encryption).
 
-This plug-in provides an upgrade in secure management of sensitive data that is used to identify individuals in the the field. Learn more in [this guide](https://support.surveycto.com/hc/en-us/articles/33842170036499).
+This plug-in provides an upgrade in secure management of sensitive data that is used to identify individuals in the field. Learn more in [this guide](https://support.surveycto.com/hc/en-us/articles/33842170036499).
 
 The gold standard for added security is still [form data encryption](https://support.surveycto.com/hc/en-us/articles/16472121582483) which can be combined with this field plug-in.
 
-*This plug-in is currently under beta. If you you find a problem with the field plug-in, please email plug-in-feedback@surveycto.com, or submit an issue to this GitHub repo.*
+*This plug-in is currently in beta. If you you find a problem with the field plug-in, please email plug-in-feedback@surveycto.com, or submit an issue to this GitHub repo.*
 
 ### Features
 
@@ -26,7 +26,7 @@ Use this field plug-in on a [*text* field](https://docs.surveycto.com/02-designi
 
 #### Encrypted data format
 
-Each piece of encrypted data will be a concatenation of the ciphertext and the initialization vector (IV), separated by a pipe (`|`). 
+Each encrypted data entry will combine the ciphertext and initialization vector (IV), separated by a pipe (`|`). 
 
 Here is an example:
 
@@ -40,7 +40,7 @@ The ciphertext and IV are both encoded using Base64.
 
 #### Field value
 
-This field returns the encrypted data in a list. The default separator in the list is a space, but you can customize this. The order of the encrypted data will be the same as the order of the plaintext data provided to the [parameters](#parameters).
+This field returns the encrypted data in a list. The default list separator is a space, but you can customize it. The order of the encrypted data will be the same as the order of the plaintext data provided to the [parameters](#parameters).
 
 For example, let's say the first piece of encrypted data has a value of `f5l2KcvRKodlSf6n06tqgQ==|XSFHs2RWb/w2bo5VC2+ipg==` and the second has a value of `imE9GbCxHJJAq3BVXmGpgg==|dqoSP2Jb/jOWPa8eleug/w==`. The field value would be this:
 
@@ -56,11 +56,11 @@ selected-at(${encrypt}, 0)
 
 If the encryption key is in an incorrect format, the data will instead be an error message about why the data could not be decrypted.
 
-**Note**: The encryption re-occurs every time you go to the field with the field plug-in, and every time encryption occurs, a new, random IV is generated to help encrypt the data. This means the encrypted data (including the ciphertext and IV) will change every time you return to the field. This is perfectly fine, and you can still use the same encryption key to decrypt your data later.
+**Note**: The encryption re-occurs every time you go to the field with the field plug-in, and every time encryption occurs, a new, random IV is generated to help encrypt the data. Thus, the encrypted data (ciphertext and IV) will change each time you revisit the field.. This is perfectly fine, and you can still use the same encryption key to decrypt your data later.
 
 #### Field display
 
-When you reach the field, it will display your field *label* (and *hint* and media if you include them as well) at the top, followed by the results of the decryption. If the decryption was successful, it will say "Success". However, if decryption failed, it will say "Failed", followed by the reason for the decryption failure. It will do this for each piece of plaintext data it receives.
+When you reach the field, it will display your field *label* (and *hint* and media if you include them as well) at the top, followed by the results of the decryption. If the decryption was successful, it will say "Success". However, if decryption failed, it will say "Failed", followed by the reason for the decryption failure. This occurs for each piece of plaintext data received.
 
 #### Metadata
 
@@ -70,7 +70,7 @@ For example, if all of the data was encrypted successfully, the metadata will be
 
     Success|Success|Success
 
-However, if the encryption key is in the incorrect format, then metadata will be something like this:
+However, if the encryption key format is incorrect, the metadata might look like this:
 
 ```
 Failed: The Base64 encryption key provided is not properly encoded. Please make sure it is properly encoded: RQmHY+vQ5UQOeufZZQHZhg=|Failed: The Base64 encryption key provided is not properly encoded. Please make sure it is properly encoded: RQmHY+vQ5UQOeufZZQHZhg=|Failed: The Base64 encryption key provided is not properly encoded. Please make sure it is properly encoded: RQmHY+vQ5UQOeufZZQHZhg=
@@ -93,7 +93,7 @@ Use the [plug-in-metadata() function](https://docs.surveycto.com/02-designing-fo
 
 ![](extras/readme-images/aes_key.png)
 
-If you choose *Manual entry*, the *default* field value will be the example encryption key (i.e. You won't need to enter anything. Just don't edit the default value).
+If you choose *Manual entry*, the *default* field value will include the example encryption key (i.e., no need to type anything). Do not modify the default value.
 
 **Warning**: This is just an example, and you should **not** publicly share your encryption key like this. You should use your own encryption key to encrypt and decrypt your data.
 
@@ -118,7 +118,7 @@ Here are the named parameters:
 
 |Name|Description|
 |---|---|
-|`key` (required)| The passkey that was used to encrypt the data, which will be used to decrypt the data. **This key must be Base64-encoded**. See the [scto-encryption package](https://github.com/surveycto/scto-encryption) for guidance on securely generating passkeys. |
+|`key` (required)| The passkey used to encrypt the data, which is required for decryption. **This key must be Base64-encoded**. See the [scto-encryption package](https://github.com/surveycto/scto-encryption) for guidance on securely generating passkeys. |
 |`separator` (optional) | The separator used in the list returned by the field plug-in. You can use any character EXCEPT those used by Base64 encoding (uppercase and lowercase letters, numbers, slash `/`, and plus `+`) and a pipe `\|` (which is used as the ciphertext-IV separator).<br>**Default**: (space) |
 
 ### Default SurveyCTO feature support
