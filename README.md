@@ -112,7 +112,9 @@ custom-encrypt(key=${key},
 2=${marital})
 ```
 
-The first parameter is the required parameter, while the second, third, and fourth parameters take the plaintext data. These parameters have the names "0", "1", and "2", but their names don't actually matter (as long as they are unique, e.g. you cannot have two parameters called "0"). This field's *value* will be the encrypted values of the fields "respondent_name", "age", and "marital" in that order in a space-separated list.
+The first parameter is the required parameter, while the second, third, and fourth parameters take the plaintext data. These parameters have the names "0", "1", and "2", but their names don't actually matter (as long as they are unique, e.g. you cannot have two parameters called "0"). You can use use numbers and letters in parameter names (e.g. the parameter name `0` can be `respondent_name` instead, or anything else).
+
+While the parameter names do not matter, the parameter **order** does matter. This field's *value* will be the encrypted values of the fields "respondent_name", "age", and "marital" in the same order as the parameters in a space-separated list.
 
 Here are the named parameters:
 
