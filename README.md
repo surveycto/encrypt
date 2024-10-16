@@ -2,7 +2,7 @@
 
 ## Description
 
-This field plug-in supports data encryption inside forms using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard). Provide an encryption key and input, and the plug-in will encrypt the input. This field plug-in was designed for use along with the [decrypt field plug-in](https://github.com/surveycto/decrypt) and the [scto-encryption package](https://github.com/surveycto/scto-encryption).
+This field plug-in encrypts data inside forms using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard). Provide an encryption key and input, and the plug-in will encrypt the input. This field plug-in was designed for use along with the [decrypt field plug-in](https://github.com/surveycto/decrypt) and the [scto-encryption package](https://github.com/surveycto/scto-encryption).
 
 This plug-in provides an upgrade in secure management of sensitive data that is used to identify individuals in the field. Learn more in [this guide](https://support.surveycto.com/hc/en-us/articles/33842170036499).
 
@@ -48,7 +48,7 @@ For example, let's say the first piece of encrypted data has a value of `f5l2Kcv
 f5l2KcvRKodlSf6n06tqgQ==|XSFHs2RWb/w2bo5VC2+ipg== imE9GbCxHJJAq3BVXmGpgg==|dqoSP2Jb/jOWPa8eleug/w==
 ```
 
-Use the [selected-at() function](https://docs.surveycto.com/02-designing-forms/01-core-concepts/09.expressions.html#Help_Forms_selected-at) to retrieve this data. For example, if the field with the field plug-in has the *name*, "encrypt", to retrieve the first piece of data from that list, use this expression in a *calculate* field:
+Use the [selected-at() function](https://docs.surveycto.com/02-designing-forms/01-core-concepts/09.expressions.html#Help_Forms_selected-at) to retrieve this data. For example, if the field with the field plug-in has the *name* "encrypt", to retrieve the first piece of data from that list, use this expression in a *calculate* field:
 
 ```
 selected-at(${encrypt}, 0)
@@ -56,7 +56,7 @@ selected-at(${encrypt}, 0)
 
 If the encryption key is in an incorrect format, the data will instead be an error message about why the data could not be decrypted.
 
-**Note**: The encryption re-occurs every time you go to the field with the field plug-in, and every time encryption occurs, a new, random IV is generated to help encrypt the data. Thus, the encrypted data (ciphertext and IV) will change each time you revisit the field.. This is perfectly fine, and you can still use the same encryption key to decrypt your data later.
+**Note**: The encryption re-occurs every time you go to the field with the field plug-in, and every time encryption occurs, a new, random IV is generated to help encrypt the data. Thus, the encrypted data (ciphertext and IV) will change each time you revisit the field. This is perfectly fine, and you can still use the same encryption key to decrypt your data later.
 
 #### Field display
 
