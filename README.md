@@ -6,7 +6,7 @@ This field plug-in encrypts data inside forms using [AES](https://en.wikipedia.o
 
 This plug-in provides an upgrade in secure management of sensitive data that is used to identify individuals in the field. Learn more in [this guide](https://support.surveycto.com/hc/en-us/articles/33842170036499).
 
-The gold standard for added security is still [form data encryption](https://support.surveycto.com/hc/en-us/articles/16472121582483) which can be combined with this field plug-in.
+The gold standard for added security is still [form data encryption](https://support.surveycto.com/hc/en-us/articles/16472121582483). Use form data encryption to protect any data that is not being directly published to the server dataset.
 
 *This plug-in is currently in beta. If you you find a problem with the field plug-in, please email plug-in-feedback@surveycto.com, or submit an issue to this GitHub repo.*
 
