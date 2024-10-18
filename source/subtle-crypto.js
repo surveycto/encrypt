@@ -8,7 +8,6 @@ class EncryptionError extends Error {
 }
 
 /*
-
 * Generates a Base64-encoded, 128-bit encryption key. (Currently not used, not tested.)
 * @param {String} algorithm
 * @return {CryptoKey} 
