@@ -10,9 +10,9 @@ Together with these other resources, the encrypt plug-in provides an upgrade in 
 
 The gold standard for added security is still [form data encryption](https://support.surveycto.com/hc/en-us/articles/16472121582483). Use form data encryption to protect any data that is not being directly published to the server dataset.
 
-*This plug-in is currently under beta. If you find a problem with the field plug-in, please email plug-in-feedback@surveycto.com.*
-
 [![](extras/readme-images/beta-release-download.jpg)](https://github.com/surveycto/encrypt/raw/main/encrypt.fieldplugin.zip)
+
+*This plug-in is currently under beta. If you find a problem with the field plug-in, please email plug-in-feedback@surveycto.com.*
 
 ### Features
 
