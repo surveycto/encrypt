@@ -27,6 +27,18 @@ for (var p = 0; p < numParameters; p++) {
 // MAIN FUNCTION
 encryptAll()
 
+/*
+* Encrypt a single piece of plaintext data.
+* @param {String} plaintext: Data to encrupt
+* @param {String} key: AES Base64-encoded encryption key.
+* @param {String} mode: Encryption mode. (Currently unused.)
+* @return {Array[String]} First item is the ciphertext, second is the IV. Both are Base64-encoded strings.
+*/
+async function encrypt (plaintext, key, mode = 'cbc') {
+  var data = await subtleEncrypt(plaintext, key)
+  return data
+}
+
 // Go through each parameter with plaintext data to be encrypted, and encrypt it.
 async function encryptAll () {
   var ciphertext = []
@@ -58,16 +70,4 @@ async function encryptAll () {
   setAnswer(ciphertext.join(separator))
   setMetaData(results.join('|'))
   document.querySelector('#decrypted').innerHTML = displayHtml.join('\n')
-}
-
-/*
-* Encrypt a single piece of plaintext data.
-* @param {String} plaintext: Data to encrupt
-* @param {String} key: AES Base64-encoded encryption key.
-* @param {String} mode: Encryption mode. (Currently unused.)
-* @return {Array[String]} First item is the ciphertext, second is the IV. Both are Base64-encoded strings.
-*/
-async function encrypt (plaintext, key, mode = 'cbc') {
-  var data = await subtleEncrypt(plaintext, key)
-  return data
 }
