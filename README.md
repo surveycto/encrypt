@@ -1,14 +1,18 @@
 # Encrypt (field plug-in)
 
+![Screenshot](extras/readme-images/encrypt_plugin.png)
+
 ## Description
 
 This field plug-in encrypts data inside forms using [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard). Provide an encryption key and input, and the plug-in will encrypt the input. This field plug-in was designed for use along with the [decrypt field plug-in](https://github.com/surveycto/decrypt) and the [scto-encryption package](https://github.com/surveycto/scto-encryption).
 
-This plug-in provides an upgrade in secure management of sensitive data that is used to identify individuals in the field. Learn more in [this guide](https://support.surveycto.com/hc/en-us/articles/33842170036499).
+Together with these other resources, the encrypt plug-in provides an upgrade in secure management of sensitive data that is used to identify individuals in the field. Learn more in [this guide](https://support.surveycto.com/hc/en-us/articles/33842170036499).
 
 The gold standard for added security is still [form data encryption](https://support.surveycto.com/hc/en-us/articles/16472121582483). Use form data encryption to protect any data that is not being directly published to the server dataset.
 
-*This plug-in is currently in beta. If you you find a problem with the field plug-in, please email plug-in-feedback@surveycto.com, or submit an issue to this GitHub repo.*
+*This plug-in is currently under beta. If you find a problem with the field plug-in, please email plug-in-feedback@surveycto.com.*
+
+[![](extras/readme-images/beta-release-download.jpg)](https://github.com/surveycto/encrypt/raw/main/encrypt.fieldplugin.zip)
 
 ### Features
 
@@ -78,7 +82,7 @@ Failed: The Base64 encryption key provided is not properly encoded. Please make 
 
 (All three of the error messages are the same, since all errors are caused by the same issue.)
 
-Use the [plug-in-metadata() function](https://docs.surveycto.com/02-designing-forms/01-core-concepts/09.expressions.html#plug-in-metadata) in your form (usually in a [*calculate* field](https://docs.surveycto.com/02-designing-forms/01-core-concepts/03zb.field-types-calculate.html)) to retrieve the metadata.
+Use the [plug-in-metadata() function](https://docs.surveycto.com/02-designing-forms/01-core-concepts/09.expressions.html#plug-in-metadata) in your form in a [*calculate* field](https://docs.surveycto.com/02-designing-forms/01-core-concepts/03zb.field-types-calculate.html) to retrieve the metadata.
 
 ## How to use
 
@@ -95,9 +99,9 @@ Use the [plug-in-metadata() function](https://docs.surveycto.com/02-designing-fo
 
 If you choose *Manual entry*, the *default* field value will include the example encryption key (i.e., no need to type anything). Do not modify the default value.
 
-**Warning**: This is just an example, and you should **not** publicly share your encryption key like this. You should use your own encryption key to encrypt and decrypt your data.
+**Warning**: This is just an example, and you should **not** publicly share your encryption key like this. Nor should you hard-code the encryption key into your form design (this also nullifies the security benefit). You should use your own encryption key to encrypt and decrypt your data.
 
-If you decide to use a QR code to store your encryption key, make sure that QR code is well-protected, since anyone who has that QR code can decrypt your data.
+If you decide to use a QR code to store your encryption key, make sure that QR code is well-protected, since anyone who has access to the QR code and your form (whether on Collect or the server) can decrypt your data.
 
 ### Parameters
 
@@ -121,7 +125,7 @@ Here are the named parameters:
 |Name|Description|
 |---|---|
 |`key` (required)| The passkey used to encrypt the data, which is required for decryption. **This key must be Base64-encoded**. See the [scto-encryption package](https://github.com/surveycto/scto-encryption) for guidance on securely generating passkeys. |
-|`separator` (optional) | The separator used in the list returned by the field plug-in. You can use any character EXCEPT those used by Base64 encoding (uppercase and lowercase letters, numbers, slash `/`, and plus `+`) and a pipe `\|` (which is used as the ciphertext-IV separator).<br>**Default**: (space) |
+|`separator` (optional) | The separator used in the list returned by the field plug-in. You can use any character EXCEPT those used by Base64 encoding (uppercase and lowercase letters, numbers, slash `/`, and plus `+`) and a pipe `\|` (which is used as the ciphertext-IV separator).The default is a space character (`(space)`). |
 
 ### Default SurveyCTO feature support
 
